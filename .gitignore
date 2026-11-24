@@ -3,5 +3,9 @@ node_modules
 .netlify
 out
 dist
+*.tsbuildinfo
 .env*.local
+.env
 *.log
+.DS_Store
+Thumbs.db
