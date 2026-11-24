@@ -91,7 +91,6 @@ equiflow/
 │       └── mock/repository.ts    # Transactional in-memory state repository
 │
 ├── tests/                        # Vitest Unit & Integration Suites
-├── idea-description/             # 15 Detailed Architecture Specifications
 ├── package.json                  # Dependencies & scripts
 └── README.md                     # Project documentation
 ```
@@ -159,22 +158,6 @@ npm run build
 # Start production server
 npm run start
 ```
-
----
-
-## 🐳 Docker Deployment
-
-To run EQUIFLOW in an isolated containerized environment:
-
-```bash
-# Build and run with Docker Compose
-docker-compose up --build -d
-
-# Check running status
-docker-compose ps
-```
-
-The container will be accessible at `http://localhost:3000`.
 
 ---
 
