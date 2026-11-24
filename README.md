@@ -92,7 +92,6 @@ equiflow/
 │
 ├── tests/                        # Vitest Unit & Integration Suites
 ├── idea-description/             # 15 Detailed Architecture Specifications
-├── netlify.toml                  # Cloud deployment configuration
 ├── package.json                  # Dependencies & scripts
 └── README.md                     # Project documentation
 ```
@@ -176,20 +175,6 @@ docker-compose ps
 ```
 
 The container will be accessible at `http://localhost:3000`.
-
----
-
-## ☁️ Cloud Deployment (Netlify)
-
-The project includes ready-to-deploy configuration for Netlify (`netlify.toml`):
-- OpenNext Next.js runtime integration
-- Edge function middleware routing
-- Serverless API handler mapping
-
-Simply push to your GitHub repository and link to Netlify, or deploy directly via Netlify CLI:
-```bash
-netlify deploy --prod
-```
 
 ---
 
