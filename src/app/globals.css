@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "leaflet/dist/leaflet.css";
+
+:root {
+  --navy: #172B4D;
+  --bg: #F6F8FA;
+  --card: #FFFFFF;
+  --teal: #167D83;
+  --critical: #B42318;
+  --high: #E04444;
+  --moderate: #D99118;
+  --low: #23865B;
+  --text: #263445;
+  --border: #DCE2E8;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Leaflet Marker Pulse */
+.marker-pin {
+  width: 32px;
+  height: 32px;
+  border-radius: 50% 50% 50% 0;
+  position: absolute;
+  transform: rotate(-45deg);
+  left: 50%;
+  top: 50%;
+  margin: -20px 0 0 -20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  border: 2px solid #ffffff;
+}
+
+.marker-pin-inner {
+  transform: rotate(45deg);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+}
