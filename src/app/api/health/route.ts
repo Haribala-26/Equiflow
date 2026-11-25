@@ -10,10 +10,15 @@ export async function GET() {
     status: dbHealth.database === "unreachable" ? "degraded" : "healthy",
     timestamp: new Date().toISOString(),
     services: {
-      dataSource: repo.getDataSourceName(),
-      database: dbHealth.database,
-      databaseLatencyMs: dbHealth.latencyMs,
-      aiEngine: geminiConfigured ? "configured" : "fallback_mode",
+      database: {
+        status: dbHealth.database,
+        source: repo.getDataSourceName(),
+        latencyMs: dbHealth.latencyMs,
+      },
+      geminiAi: {
+        status: geminiConfigured ? "configured" : "fallback_mode",
+        mode: geminiConfigured ? "Gemini 2.5 Flash" : "Deterministic Heuristic",
+      },
       auditEngine: "operational",
       city: "Chennai (Tamil Nadu, India)",
     },

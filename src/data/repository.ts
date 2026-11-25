@@ -1,5 +1,4 @@
 import { IRepository, getRepository as getMockRepository } from "./mock/repository";
-import { getPrismaRepository } from "./prisma/repository";
 
 export * from "./mock/repository";
 
@@ -16,15 +15,16 @@ export function getRepository(): IRepository {
 
   if (dataSource === "prisma") {
     try {
-      activeRepo = getPrismaRepository();
-      return activeRepo;
+      const { getPrismaRepository } = require("./prisma/repository");
+      const repo = getPrismaRepository() as IRepository;
+      activeRepo = repo;
+      return repo;
     } catch (err) {
       console.warn("⚠️ [EQUIFLOW] Failed to initialize PrismaRepository; falling back to MockRepository:", err);
-      activeRepo = getMockRepository();
-      return activeRepo;
     }
   }
 
-  activeRepo = getMockRepository();
-  return activeRepo;
+  const mockRepo = getMockRepository();
+  activeRepo = mockRepo;
+  return mockRepo;
 }
