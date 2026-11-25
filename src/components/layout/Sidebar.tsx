@@ -35,7 +35,6 @@ export function Sidebar() {
     },
     { href: "/allocation-centre", label: "Allocation Centre", icon: Scale },
     { href: "/map-view", label: "Map View", icon: MapIcon },
-    { href: "/simulations", label: "What-If Simulations", icon: FlaskConical },
     { href: "/reports-audit", label: "Reports & Audit", icon: FileText },
   ];
 
@@ -44,7 +43,6 @@ export function Sidebar() {
     { href: "/admin?tab=scoring", label: "Scoring Formula", icon: Sliders },
     { href: "/admin?tab=inventory", label: "Inventory Control", icon: Boxes },
     { href: "/admin?tab=users", label: "Users & Roles", icon: Users2 },
-    { href: "/admin?tab=system", label: "System Diagnostics", icon: Activity },
   ];
 
   return (

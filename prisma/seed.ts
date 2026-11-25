@@ -43,16 +43,6 @@ export async function seedDatabase(client: PrismaClient = prisma) {
     },
   });
 
-  await client.user.create({
-    data: {
-      id: "usr-field-01",
-      name: "Field Officer Priya",
-      email: "priya@equiflow.org",
-      role: "field_officer",
-      active: true,
-    },
-  });
-
   // 3. Seed Priority Configuration
   await client.priorityConfig.create({
     data: {

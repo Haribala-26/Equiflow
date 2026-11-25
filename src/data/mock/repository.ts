@@ -43,7 +43,6 @@ export interface IRepository {
 const DEFAULT_USERS: UserRecord[] = [
   { id: "usr-admin-01", name: "System Administrator", email: "admin@equiflow.org", role: "admin", active: true },
   { id: "usr-coord-01", name: "Emergency Coordinator Raman", email: "coordinator@equiflow.org", role: "coordinator", active: true },
-  { id: "usr-field-01", name: "Field Officer Priya", email: "priya@equiflow.org", role: "field_officer", active: true },
 ];
 
 export class MockRepository implements IRepository {

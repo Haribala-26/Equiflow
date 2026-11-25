@@ -88,21 +88,21 @@ export default function DashboardOverviewPage() {
     return (
       <div className="space-y-6">
         {/* Admin Header Banner */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-slate-900 to-indigo-950 p-6 rounded-2xl text-white shadow-md">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900 p-5 rounded-xl border border-slate-800 text-white shadow-sm">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 uppercase tracking-widest">
+              <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 uppercase tracking-wider">
                 Governance View
               </span>
-              <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+              <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
                 Administrator
               </span>
             </div>
-            <h1 className="text-xl md:text-2xl font-black tracking-tight text-white flex items-center gap-2">
+            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
               <ShieldCheck className="w-6 h-6 text-indigo-400" />
               <span>System Governance & Operational Oversight</span>
             </h1>
-            <p className="text-xs md:text-sm text-slate-300 mt-1">
+            <p className="text-xs md:text-sm text-slate-300 mt-0.5">
               Deterministic formula policies, personnel RBAC directory, warehouse constraints, and audit stream
             </p>
           </div>

@@ -50,22 +50,22 @@ function AdminDashboardContent() {
   return (
     <div className="space-y-6">
       {/* Admin Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-gradient-to-r from-slate-900 to-indigo-950 p-6 rounded-2xl text-white shadow-md">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900 p-5 rounded-xl border border-slate-800 text-white shadow-sm">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 uppercase tracking-widest">
-              Governance & Oversight
+            <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 uppercase tracking-wider">
+              Governance Hub
             </span>
-            <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
-              Session: Administrator
+            <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
+              Role: Administrator
             </span>
           </div>
-          <h1 className="text-xl md:text-2xl font-black tracking-tight text-white flex items-center gap-2">
+          <h1 className="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
             <ShieldCheck className="w-6 h-6 text-indigo-400" />
             <span>Administrator Control Hub</span>
           </h1>
-          <p className="text-xs md:text-sm text-slate-300 mt-1">
-            System governance, formula policy calibration, warehouse inventory limits, and multi-user RBAC administration
+          <p className="text-xs md:text-sm text-slate-300 mt-0.5">
+            System governance, scoring formula calibration, warehouse inventory thresholds, and personnel RBAC administration
           </p>
         </div>
 
@@ -76,7 +76,7 @@ function AdminDashboardContent() {
                 resetDemo();
               }
             }}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-red-600/80 hover:bg-red-600 text-white rounded-lg text-xs font-semibold shadow-sm transition"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold shadow-sm transition"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset Demo Data</span>
@@ -85,13 +85,12 @@ function AdminDashboardContent() {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex items-center gap-1 border-b border-borderDefault overflow-x-auto pb-1 text-xs font-medium">
+      <div className="flex items-center gap-1 border-b border-borderDefault pb-1 text-xs font-medium">
         {[
           { id: "scoring", label: "Scoring Formula", icon: Sliders },
           { id: "inventory", label: "Inventory Control", icon: Boxes },
           { id: "users", label: "Users & Roles", icon: Users2 },
           { id: "audit", label: "Full Audit Stream", icon: FileText },
-          { id: "system", label: "System Diagnostics", icon: Activity },
           { id: "city", label: "City & Demo Controls", icon: MapPin },
         ].map((tab) => {
           const Icon = tab.icon;
@@ -118,7 +117,6 @@ function AdminDashboardContent() {
       {activeTab === "inventory" && <InventoryControlPanel inventory={inventory} onUpdate={refreshData} />}
       {activeTab === "users" && <UsersManagementPanel />}
       {activeTab === "audit" && <FullAuditPanel />}
-      {activeTab === "system" && <SystemDiagnosticsPanel />}
       {activeTab === "city" && (
         <CityAndDemoPanel
           currentCity={currentCity}
@@ -909,131 +907,7 @@ function FullAuditPanel() {
 }
 
 // -------------------------------------------------------------
-// TAB 5: System Diagnostics Panel
-// -------------------------------------------------------------
-function SystemDiagnosticsPanel() {
-  const [health, setHealth] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const fetchHealth = () => {
-    setIsLoading(true);
-    fetch("/api/health")
-      .then((res) => res.json())
-      .then((data) => setHealth(data))
-      .catch((err) => console.error(err))
-      .finally(() => setIsLoading(false));
-  };
-
-  useEffect(() => {
-    fetchHealth();
-  }, []);
-
-  return (
-    <div className="space-y-6">
-      <div className="bg-white rounded-xl border border-borderDefault shadow-sm p-6 space-y-4">
-        <div className="flex items-center justify-between border-b pb-4">
-          <div>
-            <h2 className="text-base font-bold text-navy flex items-center gap-2">
-              <Activity className="w-4 h-4 text-indigo-600" />
-              <span>System Health & Diagnostic Telemetry</span>
-            </h2>
-            <p className="text-xs text-slate-500 mt-0.5">
-              Live operational monitoring for PostgreSQL / Prisma database, Gemini AI gateway, and audit integrity engines.
-            </p>
-          </div>
-          <button
-            onClick={fetchHealth}
-            className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg text-xs transition"
-          >
-            Refresh Diagnostics
-          </button>
-        </div>
-
-        {health && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
-            {/* Database Service */}
-            <div className="p-4 rounded-xl border bg-slate-50 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-slate-700 flex items-center gap-1.5">
-                  <Database className="w-4 h-4 text-indigo-600" />
-                  <span>Database Layer</span>
-                </span>
-                <span
-                  className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                    health.services?.database?.status === "ok"
-                      ? "bg-emerald-100 text-emerald-800"
-                      : "bg-red-100 text-red-800"
-                  }`}
-                >
-                  {health.services?.database?.status || "Unknown"}
-                </span>
-              </div>
-              <div className="space-y-1 text-slate-600">
-                <div className="flex justify-between">
-                  <span>Data Source:</span>
-                  <span className="font-mono font-bold text-slate-900">{health.services?.database?.source}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Latency:</span>
-                  <span className="font-mono text-slate-900">{health.services?.database?.latencyMs} ms</span>
-                </div>
-              </div>
-            </div>
-
-            {/* AI Assessment Service */}
-            <div className="p-4 rounded-xl border bg-slate-50 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-slate-700 flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-teal" />
-                  <span>Gemini AI Engine</span>
-                </span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-100 text-emerald-800">
-                  {health.services?.geminiAi?.status || "Configured"}
-                </span>
-              </div>
-              <div className="space-y-1 text-slate-600">
-                <div className="flex justify-between">
-                  <span>Mode:</span>
-                  <span className="font-semibold text-slate-900">{health.services?.geminiAi?.mode}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Model:</span>
-                  <span className="font-mono text-slate-900">gemini-2.5-flash</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Elephant-Goldfish Adapter */}
-            <div className="p-4 rounded-xl border bg-slate-50 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-slate-700 flex items-center gap-1.5">
-                  <Layers className="w-4 h-4 text-amber-600" />
-                  <span>Elephant–Goldfish</span>
-                </span>
-                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-emerald-100 text-emerald-800">
-                  Active
-                </span>
-              </div>
-              <div className="space-y-1 text-slate-600">
-                <div className="flex justify-between">
-                  <span>Mode:</span>
-                  <span className="font-semibold text-slate-900">Adaptive Memory Protocol</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Fresh-Eyes Review:</span>
-                  <span className="font-semibold text-emerald-700">Enforced</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// -------------------------------------------------------------
-// TAB 6: City & Demo Controls Panel
+// TAB 5: City & Demo Controls Panel
 // -------------------------------------------------------------
 function CityAndDemoPanel({
   currentCity,
