@@ -13,11 +13,14 @@
 
 ## 🛠️ Tech Stack
 
+> **Backend Tech Stack:** Next.js 15 (Node.js/TypeScript), PostgreSQL 16 via Prisma ORM, Google Gemini 2.5 Flash, and Zod.
+
 - **Frontend & App Framework**: Next.js 15 (App Router), React 19, TypeScript 5.7, Tailwind CSS
+- **Backend & APIs**: Next.js 15 Server Route Handlers (Node.js, TypeScript 5.7), Session-based RBAC Guards
 - **Database & Persistence**: PostgreSQL 16, Prisma ORM 6.4, In-Memory Mock Repository (`DATA_SOURCE=mock | prisma`)
 - **Spatial Mapping & Analytics**: Leaflet (OpenStreetMap), Recharts
 - **Responsible AI Engine**: Google Gemini 2.5 Flash + Resilient Offline Heuristic Engine
-- **Security & Governance**: Zod Validation, Server-Side RBAC Guard, Append-Only Audit Ledger
+- **Validation & Governance**: Zod Validation, Server-Side RBAC Guard, Append-Only Audit Ledger
 - **Testing & Containerization**: Vitest 3.2 (37 automated tests), Docker Compose
 
 ---
