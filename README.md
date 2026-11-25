@@ -1,105 +1,156 @@
 # EQUIFLOW — Intelligent Emergency Resource Distribution Platform
 
 > **Primary Focus City:** Chennai, Tamil Nadu, India  
-> **Domain:** Humanitarian Logistics & Disaster Relief Optimization  
-> **Tech Stack:** Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS, Leaflet OpenStreetMap, Recharts, Vitest
+> **Domain:** Humanitarian Logistics, Disaster Relief Optimization & Algorithmic Fairness  
+> **Tech Stack:** Next.js 15.5.29 (App Router), React 19, TypeScript 5.7, Prisma ORM 6.4, PostgreSQL 16, Tailwind CSS, Leaflet OpenStreetMap, Recharts, Zod, Vitest 3.2, Docker Compose
 
 ---
 
 ## 🌟 Overview
 
-During severe emergencies and natural disasters (such as the monsoon floods in Chennai), emergency response teams face an urgent operational challenge: **relief supplies are severely limited, and demand surges unpredictably across multiple affected areas.**
+During severe emergencies and natural disasters (such as the monsoon floods in Chennai), disaster management authorities face an acute operational challenge: **relief supplies are severely constrained, while life-critical demand surges unpredictably across flooded municipal wards.**
 
-Equal distribution is not fair distribution. Giving every neighborhood 50 food packs when one zone is submerged in 5 feet of water while another has minor waterlogging causes preventable loss of life.
+Equal distribution is not equitable distribution. Providing every neighborhood 50 food rations when one ward is submerged under 5 feet of water while another has minor street waterlogging leads to preventable casualties.
 
-**EQUIFLOW** is an industrial-grade, AI-assisted decision-support platform designed to replace chaotic guesswork with mathematical fairness, transparent priority scoring, real-time geographic tracking, and automated audit safeguards.
-
----
-
-## 📐 Mathematical Formulation
-
-EQUIFLOW enforces a strict separation between **AI assistance** and **deterministic math**. While AI helps transcribe and structure messy field messages from the ground, **all resource quantities and priority rankings are computed deterministically.**
-
-### 1. The 5-Factor Priority Scoring Engine
-
-Every monitored area receives a composite Priority Score $P \in [0, 100]$:
-
-$$P = (w_s \cdot S) + (w_u \cdot U) + (w_v \cdot V) + (w_n \cdot N) + (w_p \cdot \min(100, \frac{\text{Pop}}{C_{pop}} \times 100))$$
-
-| Factor | Weight | Description |
-| :--- | :---: | :--- |
-| **Severity ($S$)** | **30%** | Physical hazard level (flood depth, structural collapse, water levels) |
-| **Urgency ($U$)** | **25%** | Time-criticality (isolation, medical emergencies, imminent danger) |
-| **Vulnerability ($V$)** | **20%** | Proportion of infants, elderly, pregnant women, and disabled citizens |
-| **Unmet Need Ratio ($N$)** | **15%** | Historical deficit ratio ($\frac{\text{Requested} - \text{Received}}{\text{Requested}}$) |
-| **Population Impact ($P$)** | **10%** | Scale of affected population capped at 50,000 threshold |
-
-#### Priority Tiers:
-- 🔴 **Critical ($P \ge 80$):** Immediate life-support danger (Submerged, zero access)
-- 🟠 **High ($60 \le P < 80$):** High vulnerability, severe shortages
-- 🟡 **Moderate ($40 \le P < 60$):** Stable, localized shortages
-- 🟢 **Low ($P < 40$):** Minimal hazard, baseline monitoring
+**EQUIFLOW** is an industrial-grade, AI-assisted decision-support platform designed to replace chaotic guesswork with mathematical fairness, transparent multi-criteria priority scoring, real-time spatial logistics, tamper-proof audit trails, and strict role-based governance.
 
 ---
 
-### 2. The 2-Phase Constrained Allocation Algorithm
+## 🔄 End-to-End Operational Flow of the Project
 
-When total requested resources exceed available warehouse inventory ($\sum \text{Demand} > \text{Supply}$), EQUIFLOW runs a 2-phase constrained optimization:
-
-1. **Phase 1: Minimum Floor Coverage (Anti-Starvation Pass)**  
-   Guarantees that every active, eligible area receives at least **20%** of its essential survival needs (drinking water and food packs) before any area receives surplus stock.
-
-2. **Phase 2: Weighted Proportional Distribution**  
-   The remaining warehouse stock is divided among eligible areas proportionally based on their priority score and unmet demand:
-   $$\text{Share}_i = \text{RemainingSupply} \times \frac{P_i \times \text{Deficit}_i}{\sum (P_k \times \text{Deficit}_k)}$$
-   Discreet indivisible units (e.g., cans, packs) are rounded using the **Hamilton-Hare Largest Remainder Method** to ensure zero unit leakage.
-
----
-
-## 🏗️ System Architecture & Modules
+Equiflow operates on a 10-stage end-to-end humanitarian workflow that balances operational urgency with mathematical rigor and human accountability:
 
 ```
-equiflow/
-├── src/
-│   ├── app/                      # Next.js App Router (Pages & REST Endpoints)
-│   │   ├── page.tsx              # Mission Control Overview Dashboard
-│   │   ├── affected-areas/       # 7 Chennai Wards & AI Field Assessment Tool
-│   │   ├── resource-inventory/   # Warehouse Stock & 7-Day Burn Forecast
-│   │   ├── allocation-centre/    # 2-Phase Allocation Engine & Truck Dispatches
-│   │   ├── map-view/             # Fullscreen Chennai OpenStreetMap
-│   │   ├── reports-audit/        # Tamper-Proof Accountability Ledger & Export
-│   │   ├── settings/             # Formula Tuning & Pristine Demo Reset
-│   │   └── api/                  # REST API routes
-│   │
-│   ├── domain/                   # Pure Mathematical Engines
-│   │   ├── priority/             # 5-factor scoring calculator
-│   │   ├── allocation/           # 2-phase constrained allocation algorithm
-│   │   ├── config.ts             # Weights, priority thresholds & coordinates
-│   │   └── types.ts              # Strongly-typed domain interfaces
-│   │
-│   ├── components/               # Frontend UI Components
-│   │   ├── map/                  # Leaflet interactive map & color-coded markers
-│   │   ├── charts/               # Recharts visualizations (shortages, distributions)
-│   │   └── layout/               # Header bar and Sidebar navigation
-│   │
-│   ├── integrations/             # AI & Audit Adapters
-│   │   ├── gemini/               # Natural language field report analyzer
-│   │   └── elephant-goldfish/    # Automated quality & fairness audit adapter
-│   │
-│   └── data/                     # Data Storage & Seed Records
-│       ├── mock/seed.ts          # 7 Chennai flood zones & emergency stock
-│       └── mock/repository.ts    # Transactional in-memory state repository
-│
-├── tests/                        # Vitest Unit & Integration Suites
-├── package.json                  # Dependencies & scripts
-└── README.md                     # Project documentation
+[ Field Reconnaissance ] ──► [ AI Narrative Parsing ] ──► [ Human Review Gate ]
+ (Ground Reports / SMS)        (Gemini + Fallback)          (Coordinator Sign-Off)
+                                                                     │
+                                                                     ▼
+[ Dispatch Manifests ] ◄── [ Stock Deduction ] ◄── [ 2-Phase Allocation ] ◄── [ MCDA Priority Engine ]
+ (Logistics Tracking)      (ACID Transactions)       (Anti-Starvation Floor)    (5 Weighted Dimensions)
+         ▲
+         │
+[ Fresh-Eyes Audit ] ──► [ What-If Simulations ] ──► [ System Governance ]
+ (Elephant-Goldfish)       (Stress-Test Shocks)       (Admin Policy Tuning)
 ```
+
+### Step-by-Step Workflow Breakdown
+
+1. **Field Ingestion**: On-ground officers submit unstructured situational updates (e.g. *"Water entering ICU in Saidapet. Urgent 1,000 food rations and 4,000 litres clean drinking water needed."*).
+2. **Responsible AI Extraction**: Google Gemini 2.5 Flash analyzes narrative text and extracts structured needs, urgency, and hazard levels. If connectivity is lost or the API is unavailable, the system instantly switches to a **deterministic keyword heuristic parser** without interruption.
+3. **Mandatory Human-in-the-Loop Gate**: Extracted requirements are staged as *suggestions*. An Emergency Coordinator must review, adjust, and approve suggestions before they enter the mathematical pipeline. AI is **never** permitted to autonomously dispatch supplies.
+4. **MCDA Priority Scoring**: Municipal wards receive a deterministic score $P \in [0, 100]$ across 5 weighted dimensions:
+   - **Severity (30%)**: Physical flood depth and structural damage.
+   - **Urgency (25%)**: Time-criticality, medical distress, and road isolation.
+   - **Vulnerability (20%)**: High-risk demographic concentration (infants, elderly, disabled).
+   - **Unmet Need (15%)**: Cumulative supply deficit vs verified demand.
+   - **Population Impact (10%)**: Log-normalized affected resident population (capped at 50,000).
+5. **2-Phase Constrained Optimization**:
+   - **Phase 1 (Anti-Starvation Floor)**: Every eligible ward is guaranteed at least **20%** of its essential survival needs (water and food) before surplus is distributed.
+   - **Phase 2 (Weighted Proportional Rationing)**: Remaining warehouse stock is distributed proportionally according to priority scores and unmet demand. Discrete units are rounded with zero leakage using the **Hamilton-Hare Largest Remainder Method**.
+6. **Fresh-Eyes Equity Audit**: The **Elephant-Goldfish** audit adapter executes automated bias checks, flagging potential starvation, regional disparity, or outlier allocations prior to approval.
+7. **Coordinator Authorization & ACID Stock Reservation**: The Coordinator reviews truck manifests, checks fairness satisfaction curves, and authorizes the run. Atomic database transactions (`$transaction`) deduct warehouse stock with optimistic concurrency locking.
+8. **Immutable Cryptographic Audit Logging**: Every override, approval, policy change, and AI assessment is committed to an append-only `AuditEvent` ledger.
+9. **What-If Stress Simulations**: Coordinators and Administrators run isolated simulations (e.g. -30% supply cutoff, +20% evacuee surge) with baseline comparison before optionally committing them with operational justification.
+10. **Administrative Governance & Formula Policy Tuning**: Administrators calibrate the 5 scoring weights (validated with Zod sum = 100%), manage user roles, review system diagnostics, and execute baseline resets.
+
+---
+
+## 🏛️ High-Level System Architecture
+
+Equiflow is architected using a decoupled **Hexagonal / Ports-and-Adapters** design that enforces strict separation between presentation, security guards, mathematical domain engines, and the underlying data layer.
+
+```
++---------------------------------------------------------------------------------------+
+|                                  PRESENTATION LAYER                                   |
+|                                                                                       |
+|   EMERGENCY COORDINATOR VIEW (Default)             ADMINISTRATOR GOVERNANCE HUB       |
+|   - Real-time Operations Dashboard                 - Multi-Tab Control Panel (/admin) |
+|   - Spatial Map & Ward Leaderboard                 - MCDA Scoring Weight Tuning (Zod) |
+|   - Allocation Centre & Fairness Curve             - Warehouse Stock Limits & Batches |
+|   - What-If Stress Simulations                     - Personnel Directory & RBAC       |
+|   - Resource Inventory (READ-ONLY MODE)            - System Health Diagnostics        |
++---------------------------------------------------------------------------------------+
+                                           │
+                                    (Session / HTTP)
+                                           ▼
++---------------------------------------------------------------------------------------+
+|                            SERVER-SIDE RBAC SECURITY GUARD                            |
+|                        src/lib/session.ts  ──►  src/lib/rbac.ts                       |
+|           Enforces HTTP 403 Forbidden on unauthorized roles at the API level          |
++---------------------------------------------------------------------------------------+
+                                           │
+                                           ▼
++---------------------------------------------------------------------------------------+
+|                              CORE DOMAIN BUSINESS ENGINES                             |
+|                           (Pure Math — Zero Database Imports)                         |
+|                                                                                       |
+|   +-----------------------+   +-----------------------+   +-----------------------+   |
+|   |    Priority Engine    |   |   Allocation Engine   |   |   Simulation Engine   |   |
+|   | - 5 Weighted Factors  |   | - Anti-Starvation 20% |   | - Supply Disruption   |   |
+|   | - Pop Normalization   |   | - Hamilton-Hare Round |   | - Population Surges   |   |
+|   +-----------------------+   +-----------------------+   +-----------------------+   |
++---------------------------------------------------------------------------------------+
+                                           │
+                               (Domain Interfaces Only)
+                                           ▼
++---------------------------------------------------------------------------------------+
+|                            REPOSITORY ABSTRACTION LAYER                               |
+|                         src/data/repository.ts (Factory)                              |
+|                                                                                       |
+|         DATA_SOURCE="mock" (Default)                   DATA_SOURCE="prisma"           |
+|         ┌─────────────────────────┐                    ┌──────────────────────────┐   |
+|         │     MockRepository      │                    │     PrismaRepository     │   |
+|         │  (In-Memory Concurrency)│                    │  (PostgreSQL 16 Layer)   │   |
+|         └─────────────────────────┘                    └────────────┬─────────────┘   |
++---------------------------------------------------------------------┼-----------------+
+                                                                      │
+                                                        ┌─────────────▼─────────────┐
+                                                        │       PostgreSQL 16       │
+                                                        │  - ACID Transactions      │
+                                                        │  - Optimistic Locking     │
+                                                        │  - Stale Input Blocking   │
+                                                        │  - Append-Only Audit Logs │
+                                                        └───────────────────────────┘
+```
+
+---
+
+## 👥 Role-Based Access Control (RBAC) & View Divergence
+
+Equiflow provides two distinct, tailored experiences enforced both in the UI and server-side:
+
+### Role Permissions Matrix
+
+| Capability / Resource | Emergency Coordinator (Default) | Administrator |
+| :--- | :---: | :---: |
+| **Operational Mission Control Dashboard** | ✅ Full Access | ✅ Full Access |
+| **Affected Areas & Priority Scoring Breakdown** | ✅ Full Access | ✅ Full Access |
+| **AI Field Report Assessment Tool** | ✅ Full Access | ✅ Full Access |
+| **Allocation Optimization & Dispatch Sign-Off** | ✅ Full Access | ✅ Full Access |
+| **What-If Scenario Simulation Engine** | ✅ Full Access | ✅ Full Access |
+| **Resource Inventory & Shortage Forecaster** | 👁️ **Read-Only Mode** | ✏️ **Edit Stock & Reserves** |
+| **Scoring Formula Policy Tuning (MCDA)** | ❌ Blocked (HTTP 403) | ✅ **Full Calibration** |
+| **Personnel Directory & Role Management** | ❌ Blocked (HTTP 403) | ✅ **Full RBAC Control** |
+| **Full System Audit Trail & Override Stream** | ❌ Blocked (HTTP 403) | ✅ **Filterable Ledger** |
+| **System Diagnostics (DB Latency, Health)** | ❌ Blocked (HTTP 403) | ✅ **Live Telemetry** |
+| **Factory Demo Data Reset** | ❌ Blocked (HTTP 403) | ✅ **Privileged Action** |
+
+---
+
+## 📚 Deep-Dive Architecture Specifications
+
+Comprehensive architectural specifications are maintained in the [`idea-description/`](./idea-description) directory:
+
+- 🗄️ **[Database Design Specification](./idea-description/DATABASE_DESIGN.md)**: Relational entity schema (15 Prisma models), fixed unit constraints, ACID transactions, optimistic concurrency locking (`version`), stale-input detection, and deterministic seed definitions.
+- 🏛️ **[System Architecture Specification](./idea-description/SYSTEM_ARCHITECTURE.md)**: Hexagonal architecture design, repository factory pattern, presentation layer divergence, and the Elephant-Goldfish dual-memory protocol.
+- 🛡️ **[Security & Responsible AI Architecture](./idea-description/SECURITY_AND_RESPONSIBLE_AI.md)**: Centralized RBAC permission matrix, server-side guard enforcement (`guardPermission`), AI deterministic fallback mechanisms, human-in-the-loop gates, and append-only audit verification.
+- 🧪 **[Testing & Deployment Guide](./idea-description/TESTING_AND_DEPLOYMENT.md)**: 3-tier quality gate matrix, Vitest test suite breakdown (37 tests across 8 suites), Docker Compose orchestration (PostgreSQL 16 + web), and environment configuration.
 
 ---
 
 ## 🗺️ Monitored Flood Wards (Chennai, Tamil Nadu)
 
-EQUIFLOW comes pre-configured with 7 active flood zones mapped across Greater Chennai:
+Equiflow comes pre-configured with 7 active flood wards mapped across Greater Chennai:
 
 | Ward Code | Zone / Neighborhood | Coordinates | Population | Baseline Status |
 | :--- | :--- | :---: | :---: | :---: |
@@ -115,11 +166,7 @@ EQUIFLOW comes pre-configured with 7 active flood zones mapped across Greater Ch
 
 ## 🚀 Quickstart
 
-### Prerequisites
-- **Node.js**: v20+ or v22 LTS
-- **npm** or **pnpm**
-
-### Installation & Local Setup
+### Option A: In-Memory Mock Mode (Zero Database Setup)
 
 ```bash
 # 1. Clone repository
@@ -129,11 +176,11 @@ cd equiflow
 # 2. Install dependencies
 npm install
 
-# 3. Configure environment variables (optional)
+# 3. Configure environment
 cp .env.example .env.local
-# Add your GEMINI_API_KEY (system includes deterministic fallback if omitted)
+# DATA_SOURCE is set to "mock" by default
 
-# 4. Start development server
+# 4. Start Next.js development server
 npm run dev
 ```
 
@@ -141,35 +188,43 @@ Open [http://localhost:3000](http://localhost:3000) in your web browser.
 
 ---
 
-## 🧪 Quality Verification & Testing
-
-EQUIFLOW enforces 100% test passing across mathematical calculations, API routes, and edge-case handling:
+### Option B: Full PostgreSQL (Prisma) Mode via Docker Compose
 
 ```bash
-# Run unit and integration tests (20 / 20 passing)
-npm run test
+# 1. Start PostgreSQL 16 container and application
+docker compose up -d
 
-# Run strict TypeScript compiler verification (0 errors)
+# 2. Apply Prisma schema migrations
+npm run db:migrate
+
+# 3. Seed deterministic Chennai baseline data
+npm run db:seed
+
+# 4. Access live application at http://localhost:3000
+```
+
+---
+
+## 🧪 Quality Verification & Testing
+
+Equiflow enforces 100% automated test verification across mathematical formulas, RBAC permissions, and API boundaries:
+
+```bash
+# 1. Run strict TypeScript compiler verification (0 errors)
 npm run typecheck
 
-# Build optimized production bundle
+# 2. Run automated Vitest test suite (37 / 37 passing across 8 suites)
+npm run test
+
+# 3. Build optimized production Next.js bundle
 npm run build
 
-# Start production server
+# 4. Start production server
 npm run start
 ```
 
 ---
 
-## 🔒 Responsible AI & Governance
-
-1. **Deterministic Core:** AI does not dictate supply volumes or delivery orders. All mathematical computations are auditable and reproducible.
-2. **Deterministic Fallback:** If internet access or API services are unavailable in a disaster zone, the system automatically uses local regex/heuristic field report extraction.
-3. **Automated Equity Auditing:** The internal audit adapter continuously analyzes allocations for bias, disparity, and starvation before coordinator sign-off.
-4. **Human-in-the-Loop:** All truck dispatches require explicit approval from the Emergency Coordinator.
-
----
-
 ## 📄 License
 
-This project is licensed under the MIT License — see the LICENSE file for details.
+This project is licensed under the MIT License — see the [LICENSE](./LICENSE) file for details.
