@@ -289,7 +289,7 @@ export default function SimulationsPage() {
 
             <div className="bg-white p-4 rounded-xl border shadow-sm">
               <span className="text-[11px] font-semibold text-slate-500 uppercase">Scenario Satisfaction</span>
-              <div className="text-2xl font-black text-indigo-700 mt-1">
+              <div className="text-2xl font-black text-teal mt-1">
                 {simulationResult.scenarioRun.fairness.overallSatisfactionRate.toFixed(1)}%
               </div>
               <p className="text-[11px] text-slate-400 mt-1">Under simulated disruption</p>
@@ -327,7 +327,7 @@ export default function SimulationsPage() {
 
               <button
                 onClick={() => setShowApplyModal(true)}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-lg text-xs shadow-sm transition flex items-center gap-1.5"
+                className="px-4 py-2 bg-teal hover:bg-teal-700 text-white font-bold rounded-lg text-xs shadow-sm transition flex items-center gap-1.5"
               >
                 <span>Apply Scenario to Baseline</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -382,8 +382,8 @@ export default function SimulationsPage() {
       {showApplyModal && (
         <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
           <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl space-y-4">
-            <div className="flex items-center gap-2 text-indigo-700 border-b pb-3">
-              <ShieldAlert className="w-5 h-5 text-indigo-600" />
+            <div className="flex items-center gap-2 text-navy border-b pb-3">
+              <ShieldAlert className="w-5 h-5 text-teal" />
               <h3 className="font-bold text-base text-navy">Apply Scenario to Live Baseline</h3>
             </div>
 
@@ -421,7 +421,7 @@ export default function SimulationsPage() {
               <button
                 onClick={handleApplyToBaseline}
                 disabled={isApplying || !applyReason.trim() || applySuccess}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white rounded-lg text-xs font-bold transition shadow-sm"
+                className="px-4 py-2 bg-teal hover:bg-teal-700 disabled:opacity-50 text-white rounded-lg text-xs font-bold transition shadow-sm"
               >
                 {isApplying ? "Committing..." : "Confirm & Apply"}
               </button>

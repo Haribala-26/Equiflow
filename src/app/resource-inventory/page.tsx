@@ -83,8 +83,8 @@ export default function ResourceInventoryPage() {
               <span>Read-Only Logistics Mode</span>
             </span>
           ) : (
-            <span className="flex items-center gap-1.5 px-3 py-1 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg text-xs font-semibold">
-              <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
+            <span className="flex items-center gap-1.5 px-3 py-1 bg-teal/10 text-teal border border-teal/20 rounded-lg text-xs font-semibold">
+              <ShieldCheck className="w-3.5 h-3.5 text-teal" />
               <span>Admin Stock Control Active</span>
             </span>
           )}
@@ -172,7 +172,7 @@ export default function ResourceInventoryPage() {
                   onClick={() => handleOpenEdit(stock)}
                   className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition"
                 >
-                  <PackagePlus className="w-3.5 h-3.5 text-indigo-600" />
+                  <PackagePlus className="w-3.5 h-3.5 text-teal" />
                   <span>Adjust Stock or Reserves</span>
                 </button>
               ) : (
@@ -287,7 +287,7 @@ export default function ResourceInventoryPage() {
               <button
                 onClick={handleSaveStock}
                 disabled={isSaving}
-                className="px-4 py-2 text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white rounded shadow"
+                className="px-4 py-2 text-xs font-semibold bg-teal hover:bg-teal-700 text-white rounded shadow"
               >
                 {isSaving ? "Saving..." : "Commit Inventory"}
               </button>

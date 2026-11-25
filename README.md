@@ -2,7 +2,17 @@
 
 > **Primary Focus City:** Chennai, Tamil Nadu, India  
 > **Domain:** Humanitarian Logistics, Disaster Relief Optimization & Algorithmic Fairness  
-> **Tech Stack:** Next.js 15.5.29 (App Router), React 19, TypeScript 5.7, Prisma ORM 6.4, PostgreSQL 16, Tailwind CSS, Leaflet OpenStreetMap, Recharts, Zod, Vitest 3.2, Docker Compose
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend & App Framework**: Next.js 15 (App Router), React 19, TypeScript 5.7, Tailwind CSS
+- **Database & Persistence**: PostgreSQL 16, Prisma ORM 6.4, In-Memory Mock Repository (`DATA_SOURCE=mock | prisma`)
+- **Spatial Mapping & Analytics**: Leaflet (OpenStreetMap), Recharts
+- **Responsible AI Engine**: Google Gemini 2.5 Flash + Resilient Offline Heuristic Engine
+- **Security & Governance**: Zod Validation, Server-Side RBAC Guard, Append-Only Audit Ledger
+- **Testing & Containerization**: Vitest 3.2 (37 automated tests), Docker Compose
 
 ---
 
@@ -55,7 +65,7 @@ Equiflow operates on a 10-stage end-to-end humanitarian workflow that balances o
 
 ---
 
-## 🏛️ High-Level System Architecture
+## 🏛️ Top-Level Visualizing Architecture
 
 Equiflow is architected using a decoupled **Hexagonal / Ports-and-Adapters** design that enforces strict separation between presentation, security guards, mathematical domain engines, and the underlying data layer.
 
@@ -164,63 +174,38 @@ Equiflow comes pre-configured with 7 active flood wards mapped across Greater Ch
 
 ---
 
-## 🚀 Quickstart
+## 🚀 Quick Run
 
-### Option A: In-Memory Mock Mode (Zero Database Setup)
+### Option 1: In-Memory Mock Mode (Fastest — Zero DB Setup)
 
 ```bash
-# 1. Clone repository
 git clone https://github.com/Haribala-26/equiflow.git
 cd equiflow
-
-# 2. Install dependencies
 npm install
-
-# 3. Configure environment
-cp .env.example .env.local
-# DATA_SOURCE is set to "mock" by default
-
-# 4. Start Next.js development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your web browser.
+Open [http://localhost:3000](http://localhost:3000) (Emergency Coordinator view is active by default).
 
 ---
 
-### Option B: Full PostgreSQL (Prisma) Mode via Docker Compose
+### Option 2: Full PostgreSQL Mode (Docker)
 
 ```bash
-# 1. Start PostgreSQL 16 container and application
 docker compose up -d
-
-# 2. Apply Prisma schema migrations
 npm run db:migrate
-
-# 3. Seed deterministic Chennai baseline data
 npm run db:seed
-
-# 4. Access live application at http://localhost:3000
+npm run dev
 ```
 
 ---
 
 ## 🧪 Quality Verification & Testing
 
-Equiflow enforces 100% automated test verification across mathematical formulas, RBAC permissions, and API boundaries:
-
 ```bash
-# 1. Run strict TypeScript compiler verification (0 errors)
-npm run typecheck
-
-# 2. Run automated Vitest test suite (37 / 37 passing across 8 suites)
-npm run test
-
-# 3. Build optimized production Next.js bundle
-npm run build
-
-# 4. Start production server
-npm run start
+npm run test        # 37/37 automated tests passing
+npm run typecheck   # 0 TypeScript compiler errors
+npm run build       # Optimized Next.js production build
 ```
 
 ---

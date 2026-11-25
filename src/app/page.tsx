@@ -88,21 +88,19 @@ export default function DashboardOverviewPage() {
     return (
       <div className="space-y-6">
         {/* Admin Header Banner */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900 p-5 rounded-xl border border-slate-800 text-white shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 uppercase tracking-wider">
+              <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-teal/10 text-teal border border-teal/20 uppercase tracking-wider">
                 Governance View
               </span>
-              <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
-                Administrator
-              </span>
+              <span className="text-xs text-slate-500 font-medium">Administrator System Oversight</span>
             </div>
-            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-              <ShieldCheck className="w-6 h-6 text-indigo-400" />
+            <h1 className="text-xl md:text-2xl font-black text-navy tracking-tight flex items-center gap-2">
+              <ShieldCheck className="w-6 h-6 text-teal" />
               <span>System Governance & Operational Oversight</span>
             </h1>
-            <p className="text-xs md:text-sm text-slate-300 mt-0.5">
+            <p className="text-xs md:text-sm text-slate-500 mt-0.5">
               Deterministic formula policies, personnel RBAC directory, warehouse constraints, and audit stream
             </p>
           </div>
@@ -110,14 +108,14 @@ export default function DashboardOverviewPage() {
           <div className="flex items-center gap-2">
             <Link
               href="/admin?tab=scoring"
-              className="flex items-center gap-1.5 px-3.5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold shadow-sm transition"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-teal hover:bg-teal-700 text-white rounded-lg text-xs font-semibold shadow-sm transition"
             >
               <Sliders className="w-3.5 h-3.5" />
               <span>Scoring Config</span>
             </Link>
             <Link
               href="/admin?tab=users"
-              className="flex items-center gap-1.5 px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg text-xs font-semibold shadow-sm transition"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-lg text-xs font-semibold shadow-sm transition"
             >
               <Users2 className="w-3.5 h-3.5" />
               <span>Manage Users</span>
@@ -130,7 +128,7 @@ export default function DashboardOverviewPage() {
           <div className="bg-white p-4 rounded-xl border border-borderDefault shadow-sm space-y-1">
             <div className="flex items-center justify-between text-slate-500">
               <span className="text-[11px] font-semibold uppercase tracking-wider">Database Status</span>
-              <Database className="w-4 h-4 text-indigo-600" />
+              <Database className="w-4 h-4 text-teal" />
             </div>
             <div className="text-xl font-black text-navy capitalize">
               {healthData?.services?.database?.status || "Connected"}
@@ -153,7 +151,7 @@ export default function DashboardOverviewPage() {
           <div className="bg-white p-4 rounded-xl border border-borderDefault shadow-sm space-y-1">
             <div className="flex items-center justify-between text-slate-500">
               <span className="text-[11px] font-semibold uppercase tracking-wider">Active Operators</span>
-              <Users2 className="w-4 h-4 text-indigo-600" />
+              <Users2 className="w-4 h-4 text-teal" />
             </div>
             <div className="text-xl font-black text-navy">{userCount} Personnel</div>
             <div className="text-[11px] text-slate-500">Role-Based Access Control Enforced</div>
@@ -221,12 +219,12 @@ export default function DashboardOverviewPage() {
             <div className="px-4 py-3 border-b border-borderDefault flex items-center justify-between bg-slate-50">
               <div>
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                  <FileText className="w-3.5 h-3.5 text-indigo-600" />
+                  <FileText className="w-3.5 h-3.5 text-teal" />
                   <span>Recent System Audit Activity</span>
                 </h3>
                 <p className="text-[11px] text-slate-500">Append-only operational event ledger</p>
               </div>
-              <Link href="/admin?tab=audit" className="text-xs font-semibold text-indigo-600 hover:underline">
+              <Link href="/admin?tab=audit" className="text-xs font-semibold text-teal hover:underline">
                 View All
               </Link>
             </div>
@@ -238,7 +236,7 @@ export default function DashboardOverviewPage() {
                 recentAudits.map((event) => (
                   <div key={event.id} className="p-2.5 hover:bg-slate-50 rounded-lg">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-mono font-bold text-indigo-700 text-[11px]">{event.action}</span>
+                      <span className="font-mono font-bold text-teal text-[11px]">{event.action}</span>
                       <span className="text-[10px] text-slate-400 font-mono">
                         {new Date(event.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                       </span>
@@ -260,7 +258,7 @@ export default function DashboardOverviewPage() {
               <span className="text-xs text-slate-500">Administrative Governance Active</span>
               <Link
                 href="/admin"
-                className="text-xs font-semibold text-indigo-600 hover:underline flex items-center gap-1"
+                className="text-xs font-semibold text-teal hover:underline flex items-center gap-1"
               >
                 Governance Center <ChevronRight className="w-3.5 h-3.5" />
               </Link>

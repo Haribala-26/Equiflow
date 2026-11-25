@@ -38,7 +38,7 @@ export function AccessRestricted({
           </div>
           <div className="flex justify-between text-slate-500">
             <span>Required Role:</span>
-            <span className="font-bold text-indigo-700">Administrator</span>
+            <span className="font-bold text-navy">Administrator</span>
           </div>
           <div className="flex justify-between text-slate-500">
             <span>Security Guard:</span>
@@ -56,7 +56,7 @@ export function AccessRestricted({
           </Link>
           <button
             onClick={() => setCurrentRole("admin")}
-            className="w-full flex items-center justify-center gap-1.5 px-4 py-2 bg-indigo-700 hover:bg-indigo-800 text-white rounded-lg text-xs font-semibold shadow-sm transition"
+            className="w-full flex items-center justify-center gap-1.5 px-4 py-2 bg-teal hover:bg-teal-700 text-white rounded-lg text-xs font-semibold shadow-sm transition"
           >
             <UserCheck className="w-3.5 h-3.5" />
             <span>Switch to Admin Role</span>

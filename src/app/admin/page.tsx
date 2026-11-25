@@ -50,21 +50,19 @@ function AdminDashboardContent() {
   return (
     <div className="space-y-6">
       {/* Admin Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900 p-5 rounded-xl border border-slate-800 text-white shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30 uppercase tracking-wider">
+            <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-teal/10 text-teal border border-teal/20 uppercase tracking-wider">
               Governance Hub
             </span>
-            <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-800 text-slate-300 border border-slate-700">
-              Role: Administrator
-            </span>
+            <span className="text-xs text-slate-500 font-medium">Administrator Operations & Policy Controls</span>
           </div>
-          <h1 className="text-xl md:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
-            <ShieldCheck className="w-6 h-6 text-indigo-400" />
+          <h1 className="text-xl md:text-2xl font-black text-navy tracking-tight flex items-center gap-2">
+            <ShieldCheck className="w-6 h-6 text-teal" />
             <span>Administrator Control Hub</span>
           </h1>
-          <p className="text-xs md:text-sm text-slate-300 mt-0.5">
+          <p className="text-xs md:text-sm text-slate-500 mt-0.5">
             System governance, scoring formula calibration, warehouse inventory thresholds, and personnel RBAC administration
           </p>
         </div>
@@ -76,7 +74,7 @@ function AdminDashboardContent() {
                 resetDemo();
               }
             }}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold shadow-sm transition"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-semibold shadow-sm transition"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Reset Demo Data</span>
@@ -85,7 +83,7 @@ function AdminDashboardContent() {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex items-center gap-1 border-b border-borderDefault pb-1 text-xs font-medium">
+      <div className="flex items-center gap-1 border-b border-borderDefault pb-1 text-xs font-medium overflow-x-auto">
         {[
           { id: "scoring", label: "Scoring Formula", icon: Sliders },
           { id: "inventory", label: "Inventory Control", icon: Boxes },
@@ -101,11 +99,11 @@ function AdminDashboardContent() {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 px-4 py-2.5 rounded-lg transition whitespace-nowrap ${
                 isActive
-                  ? "bg-indigo-50 text-indigo-700 font-bold border-b-2 border-indigo-600"
+                  ? "bg-teal/10 text-teal font-bold border-b-2 border-teal"
                   : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
               }`}
             >
-              <Icon className={`w-4 h-4 ${isActive ? "text-indigo-600" : "text-slate-400"}`} />
+              <Icon className={`w-4 h-4 ${isActive ? "text-teal" : "text-slate-400"}`} />
               <span>{tab.label}</span>
             </button>
           );
@@ -246,7 +244,7 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-4 gap-2">
           <div>
             <h2 className="text-base font-bold text-navy flex items-center gap-2">
-              <Sliders className="w-4 h-4 text-indigo-600" />
+              <Sliders className="w-4 h-4 text-teal" />
               <span>Multi-Criteria Decision Analysis (MCDA) Scoring Weights</span>
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
@@ -288,7 +286,7 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
           <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
             <div className="flex justify-between font-bold text-slate-800">
               <span>Severity Weight</span>
-              <span className="text-indigo-600 text-sm font-black">{weights.severity}%</span>
+              <span className="text-teal text-sm font-black">{weights.severity}%</span>
             </div>
             <input
               type="range"
@@ -297,7 +295,7 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
               step="1"
               value={weights.severity}
               onChange={(e) => setWeights({ ...weights, severity: parseInt(e.target.value) || 0 })}
-              className="w-full accent-indigo-600 cursor-pointer"
+              className="w-full accent-teal cursor-pointer"
             />
             <p className="text-[11px] text-slate-500">Physical damage, flood depth, infrastructure loss.</p>
           </div>
@@ -306,7 +304,7 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
           <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
             <div className="flex justify-between font-bold text-slate-800">
               <span>Urgency Weight</span>
-              <span className="text-indigo-600 text-sm font-black">{weights.urgency}%</span>
+              <span className="text-teal text-sm font-black">{weights.urgency}%</span>
             </div>
             <input
               type="range"
@@ -315,7 +313,7 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
               step="1"
               value={weights.urgency}
               onChange={(e) => setWeights({ ...weights, urgency: parseInt(e.target.value) || 0 })}
-              className="w-full accent-indigo-600 cursor-pointer"
+              className="w-full accent-teal cursor-pointer"
             />
             <p className="text-[11px] text-slate-500">Time-critical isolation, medical distress, food depletion.</p>
           </div>
@@ -324,7 +322,7 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
           <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
             <div className="flex justify-between font-bold text-slate-800">
               <span>Vulnerability Weight</span>
-              <span className="text-indigo-600 text-sm font-black">{weights.vulnerability}%</span>
+              <span className="text-teal text-sm font-black">{weights.vulnerability}%</span>
             </div>
             <input
               type="range"
@@ -333,7 +331,7 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
               step="1"
               value={weights.vulnerability}
               onChange={(e) => setWeights({ ...weights, vulnerability: parseInt(e.target.value) || 0 })}
-              className="w-full accent-indigo-600 cursor-pointer"
+              className="w-full accent-teal cursor-pointer"
             />
             <p className="text-[11px] text-slate-500">Elderly, infants, socio-economic baseline fragility.</p>
           </div>
@@ -342,7 +340,7 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
           <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
             <div className="flex justify-between font-bold text-slate-800">
               <span>Unmet Need Weight</span>
-              <span className="text-indigo-600 text-sm font-black">{weights.unmetNeed}%</span>
+              <span className="text-teal text-sm font-black">{weights.unmetNeed}%</span>
             </div>
             <input
               type="range"
@@ -351,7 +349,7 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
               step="1"
               value={weights.unmetNeed}
               onChange={(e) => setWeights({ ...weights, unmetNeed: parseInt(e.target.value) || 0 })}
-              className="w-full accent-indigo-600 cursor-pointer"
+              className="w-full accent-teal cursor-pointer"
             />
             <p className="text-[11px] text-slate-500">Resource deficit vs verified field request demand.</p>
           </div>
@@ -360,7 +358,7 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
           <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
             <div className="flex justify-between font-bold text-slate-800">
               <span>Population Impact Weight</span>
-              <span className="text-indigo-600 text-sm font-black">{weights.populationImpact}%</span>
+              <span className="text-teal text-sm font-black">{weights.populationImpact}%</span>
             </div>
             <input
               type="range"
@@ -369,7 +367,7 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
               step="1"
               value={weights.populationImpact}
               onChange={(e) => setWeights({ ...weights, populationImpact: parseInt(e.target.value) || 0 })}
-              className="w-full accent-indigo-600 cursor-pointer"
+              className="w-full accent-teal cursor-pointer"
             />
             <p className="text-[11px] text-slate-500">Log-normalized resident population impacted.</p>
           </div>
@@ -378,7 +376,7 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
           <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
             <div className="flex justify-between font-bold text-slate-800">
               <span>Population Cap</span>
-              <span className="text-indigo-600 text-sm font-black">{popCap.toLocaleString()}</span>
+              <span className="text-teal text-sm font-black">{popCap.toLocaleString()}</span>
             </div>
             <input
               type="number"
@@ -401,12 +399,12 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
               placeholder="e.g., Calibrating vulnerability index following coastal surge assessment"
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              className="flex-1 p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="flex-1 p-2.5 bg-slate-50 border border-slate-300 rounded-lg text-xs font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal"
             />
             <button
               onClick={handleSave}
               disabled={isSaving || !isSumValid || !reason.trim()}
-              className="px-6 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white font-bold rounded-lg text-xs shadow-sm transition flex items-center justify-center gap-1.5"
+              className="px-6 py-2.5 bg-teal hover:bg-teal-700 disabled:opacity-50 text-white font-bold rounded-lg text-xs shadow-sm transition flex items-center justify-center gap-1.5"
             >
               {isSaving ? "Saving..." : "Commit Formula Version"}
             </button>
@@ -417,7 +415,7 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
       {/* Formula Version History */}
       <div className="bg-white rounded-xl border border-borderDefault shadow-sm p-6 space-y-4">
         <h3 className="text-sm font-bold text-navy flex items-center gap-2">
-          <History className="w-4 h-4 text-indigo-600" />
+          <History className="w-4 h-4 text-teal" />
           <span>Formula Policy Version Ledger</span>
         </h3>
         <div className="overflow-x-auto">
@@ -434,7 +432,7 @@ function ScoringConfigPanel({ onUpdate }: { onUpdate: () => Promise<void> }) {
             <tbody className="divide-y divide-slate-100">
               {history.map((item, idx) => (
                 <tr key={idx} className="hover:bg-slate-50">
-                  <td className="p-3 font-mono font-bold text-indigo-700">{item.formulaVersion}</td>
+                  <td className="p-3 font-mono font-bold text-teal">{item.formulaVersion}</td>
                   <td className="p-3 font-mono text-slate-600">
                     {(item.weights.severity * 100).toFixed(0)}% /{" "}
                     {(item.weights.urgency * 100).toFixed(0)}% /{" "}
@@ -525,7 +523,7 @@ function InventoryControlPanel({
         <div className="flex items-center justify-between border-b pb-4">
           <div>
             <h2 className="text-base font-bold text-navy flex items-center gap-2">
-              <Boxes className="w-4 h-4 text-indigo-600" />
+              <Boxes className="w-4 h-4 text-teal" />
               <span>Central Warehouse Inventory Control</span>
             </h2>
             <p className="text-xs text-slate-500 mt-0.5">
@@ -561,7 +559,7 @@ function InventoryControlPanel({
                   <td className="p-3 text-center">
                     <button
                       onClick={() => handleOpenEdit(stock)}
-                      className="px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg font-semibold text-xs transition"
+                      className="px-3 py-1.5 bg-slate-100 hover:bg-teal hover:text-white text-slate-700 border border-slate-200 rounded-lg font-semibold text-xs transition"
                     >
                       Modify Stock
                     </button>
@@ -652,7 +650,7 @@ function InventoryControlPanel({
               <button
                 onClick={handleSave}
                 disabled={isSaving}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition shadow-sm"
+                className="px-4 py-2 bg-teal hover:bg-teal-700 text-white rounded-lg text-xs font-bold transition shadow-sm"
               >
                 {isSaving ? "Saving..." : "Commit Inventory Changes"}
               </button>
@@ -734,7 +732,7 @@ function UsersManagementPanel() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-4 gap-2">
         <div>
           <h2 className="text-base font-bold text-navy flex items-center gap-2">
-            <Users2 className="w-4 h-4 text-indigo-600" />
+            <Users2 className="w-4 h-4 text-teal" />
             <span>Personnel Directory & Role-Based Access Control (RBAC)</span>
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -742,7 +740,7 @@ function UsersManagementPanel() {
           </p>
         </div>
         {saveStatus && (
-          <span className="text-xs font-semibold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded">
+          <span className="text-xs font-semibold text-teal bg-teal/10 border border-teal/20 px-2.5 py-1 rounded">
             {saveStatus}
           </span>
         )}
@@ -841,7 +839,7 @@ function FullAuditPanel() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b pb-4 gap-3">
         <div>
           <h2 className="text-base font-bold text-navy flex items-center gap-2">
-            <FileText className="w-4 h-4 text-indigo-600" />
+            <FileText className="w-4 h-4 text-teal" />
             <span>Cryptographically Verified Audit Trail</span>
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -890,7 +888,7 @@ function FullAuditPanel() {
                     {event.role}
                   </span>
                 </td>
-                <td className="p-3 font-mono font-bold text-indigo-700 whitespace-nowrap">
+                <td className="p-3 font-mono font-bold text-teal whitespace-nowrap">
                   {event.action}
                 </td>
                 <td className="p-3 text-slate-600 font-mono text-[11px] whitespace-nowrap">
@@ -941,7 +939,7 @@ function CityAndDemoPanel({
       {/* City Switcher */}
       <div className="bg-white rounded-xl border border-borderDefault shadow-sm p-6 space-y-4">
         <h2 className="text-base font-bold text-navy flex items-center gap-2">
-          <MapPin className="w-4 h-4 text-indigo-600" />
+          <MapPin className="w-4 h-4 text-teal" />
           <span>Active Operating City (Section A8 Architecture)</span>
         </h2>
         <p className="text-xs text-slate-500">
@@ -953,14 +951,14 @@ function CityAndDemoPanel({
             onClick={() => onCityChange("chennai")}
             className={`p-4 rounded-xl border cursor-pointer transition ${
               currentCity === "chennai"
-                ? "bg-indigo-50/50 border-indigo-600 shadow-sm"
+                ? "bg-teal/5 border-teal shadow-sm"
                 : "hover:bg-slate-50 border-slate-200"
             }`}
           >
             <div className="flex items-center justify-between mb-1">
               <span className="font-bold text-sm text-slate-900">Chennai Metropolitan Area</span>
               {currentCity === "chennai" && (
-                <span className="text-[10px] font-bold bg-indigo-600 text-white px-2 py-0.5 rounded">
+                <span className="text-[10px] font-bold bg-teal text-white px-2 py-0.5 rounded">
                   Active City
                 </span>
               )}
@@ -974,14 +972,14 @@ function CityAndDemoPanel({
             onClick={() => onCityChange("coimbatore")}
             className={`p-4 rounded-xl border cursor-pointer transition ${
               currentCity === "coimbatore"
-                ? "bg-indigo-50/50 border-indigo-600 shadow-sm"
+                ? "bg-teal/5 border-teal shadow-sm"
                 : "hover:bg-slate-50 border-slate-200"
             }`}
           >
             <div className="flex items-center justify-between mb-1">
               <span className="font-bold text-sm text-slate-900">Coimbatore District</span>
               {currentCity === "coimbatore" && (
-                <span className="text-[10px] font-bold bg-indigo-600 text-white px-2 py-0.5 rounded">
+                <span className="text-[10px] font-bold bg-teal text-white px-2 py-0.5 rounded">
                   Active City
                 </span>
               )}

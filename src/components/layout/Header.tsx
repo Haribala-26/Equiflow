@@ -76,11 +76,11 @@ export function Header() {
           <div
             className={`hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold border ${
               isAdmin
-                ? "bg-indigo-950/80 text-indigo-300 border-indigo-700/60"
+                ? "bg-slate-800 text-slate-200 border-slate-700"
                 : "bg-teal/20 text-teal-300 border-teal-500/40"
             }`}
           >
-            {isAdmin ? <Shield className="w-3.5 h-3.5 text-indigo-400" /> : <UserCheck className="w-3.5 h-3.5 text-teal-400" />}
+            {isAdmin ? <Shield className="w-3.5 h-3.5 text-slate-300" /> : <UserCheck className="w-3.5 h-3.5 text-teal-400" />}
             <span>{isAdmin ? "Admin View" : "Coordinator View"}</span>
           </div>
 
