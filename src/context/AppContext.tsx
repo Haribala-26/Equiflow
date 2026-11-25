@@ -14,7 +14,7 @@ interface AppContextType {
   selectedAreaId: string | null;
   setSelectedAreaId: (id: string | null) => void;
   currentRole: UserRole;
-  setCurrentRole: (role: UserRole) => void;
+  setCurrentRole: (role: UserRole) => Promise<void>;
   currentCity: string;
   setCurrentCity: (city: string) => void;
   isLoading: boolean;
@@ -29,17 +29,36 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [inventory, setInventory] = useState<ResourceStock[]>([]);
   const [currentRun, setCurrentRun] = useState<AllocationRun | null>(null);
   const [selectedAreaId, setSelectedAreaId] = useState<string | null>(null);
-  const [currentRole, setCurrentRole] = useState<UserRole>("coordinator");
+  const [currentRole, setCurrentRoleState] = useState<UserRole>("coordinator");
   const [currentCity, setCurrentCity] = useState<string>("Chennai");
   const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  // Sync session on mount
+  useEffect(() => {
+    async function loadSession() {
+      try {
+        const res = await fetch("/api/auth/session");
+        if (res.ok) {
+          const data = await res.json();
+          if (data?.session?.role) {
+            setCurrentRoleState(data.session.role);
+          }
+        }
+      } catch (e) {
+        console.warn("Could not load initial server session:", e);
+      }
+    }
+    loadSession();
+  }, []);
 
   const refreshData = useCallback(async () => {
     try {
       setIsLoading(true);
+      const headers = { "x-user-role": currentRole };
       const [areasRes, invRes, allocRes] = await Promise.all([
-        fetch("/api/areas"),
-        fetch("/api/inventory"),
-        fetch("/api/allocations"),
+        fetch("/api/areas", { headers }),
+        fetch("/api/inventory", { headers }),
+        fetch("/api/allocations", { headers }),
       ]);
 
       if (areasRes.ok) {
@@ -62,12 +81,36 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [currentRole]);
+
+  const setCurrentRole = useCallback(
+    async (newRole: UserRole) => {
+      try {
+        setCurrentRoleState(newRole);
+        await fetch("/api/auth/session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ role: newRole }),
+        });
+        await refreshData();
+      } catch (err) {
+        console.error("Failed to switch session role:", err);
+      }
+    },
+    [refreshData]
+  );
 
   const resetDemo = useCallback(async () => {
     try {
       setIsLoading(true);
-      await fetch("/api/demo/reset", { method: "POST" });
+      const res = await fetch("/api/demo/reset", {
+        method: "POST",
+        headers: { "x-user-role": currentRole },
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        alert(err?.error?.message || "Reset failed: Admin permission required.");
+      }
       await refreshData();
       setSelectedAreaId(null);
     } catch (err) {
@@ -75,7 +118,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     } finally {
       setIsLoading(false);
     }
-  }, [refreshData]);
+  }, [currentRole, refreshData]);
 
   useEffect(() => {
     refreshData();

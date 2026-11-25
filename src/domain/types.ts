@@ -11,6 +11,8 @@ export interface NeedRequest {
   unit: ResourceUnit;
 }
 
+export type VerificationStatus = "verified" | "pending_review" | "unverified";
+
 export interface Area {
   id: string; // e.g. "CHN-001"
   name: string;
@@ -22,7 +24,7 @@ export interface Area {
   urgency: number; // 0 - 100
   vulnerability: number; // 0 - 100
   needs: NeedRequest[];
-  verificationStatus: "verified" | "pending_review" | "unverified";
+  verificationStatus: VerificationStatus;
   active: boolean;
   notes?: string;
 }
@@ -39,6 +41,8 @@ export interface PriorityConfig {
   weights: PriorityWeights;
   populationCap: number; // default 50000
   formulaVersion: string; // e.g. "v1.0"
+  updatedAt?: string;
+  updatedBy?: string;
 }
 
 export interface PriorityComponent {
@@ -104,6 +108,7 @@ export interface AllocationRun {
   items: AllocationItem[];
   remainingStock: Record<ResourceType, number>;
   fairness: FairnessMetrics;
+  inputVersion?: string;
   approvedAt?: string;
   approvedBy?: string;
   rejectionReason?: string;
@@ -149,4 +154,14 @@ export type UserRole =
 export interface UserSession {
   role: UserRole;
   name: string;
+}
+
+export interface UserRecord {
+  id: string;
+  name: string;
+  email: string;
+  role: UserRole;
+  active: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRepository } from "@/data/repository";
 import { calculatePriorityScore } from "@/domain/priority/calculator";
+import { guardPermission } from "@/lib/session";
 
 export async function GET(
   req: Request,
@@ -28,6 +29,9 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { session, response } = await guardPermission("area:edit", req);
+    if (response) return response;
+
     const { id } = await params;
     const body = await req.json();
     const repo = getRepository();
@@ -46,7 +50,7 @@ export async function PATCH(
       id, // protect ID
     };
 
-    await repo.saveArea(updated, body.actor || "Coordinator", body.reason);
+    await repo.saveArea(updated, body.actor || session.name, body.reason);
     return NextResponse.json({ area: updated });
   } catch (error: any) {
     return NextResponse.json(
@@ -60,6 +64,9 @@ export async function DELETE(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { response } = await guardPermission("area:edit", req);
+  if (response) return response;
+
   const { id } = await params;
   const repo = getRepository();
   await repo.deleteArea(id);

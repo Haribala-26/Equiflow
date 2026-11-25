@@ -1,0 +1,285 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  admin
+  coordinator
+  field_officer
+  resource_manager
+  auditor
+  viewer
+}
+
+enum VerificationStatus {
+  verified
+  pending_review
+  unverified
+}
+
+enum ResourceType {
+  food
+  water
+  medical
+  shelter
+  hygiene
+}
+
+enum ResourceUnit {
+  packs
+  litres
+  kits
+}
+
+enum AllocationStatus {
+  draft
+  pending_approval
+  approved
+  rejected
+}
+
+enum ApprovalDecision {
+  approved
+  rejected
+}
+
+enum AIAnalysisStatus {
+  suggested
+  reviewed
+  accepted
+  rejected
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  role      Role     @default(coordinator)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  approvals       Approval[]
+  allocationRuns  AllocationRun[]
+  assessments     Assessment[]
+  priorityConfigs PriorityConfig[]
+
+  @@map("users")
+}
+
+model Area {
+  id                 String             @id
+  name               String
+  latitude           Float              @map("lat")
+  longitude          Float              @map("lng")
+  population         Int
+  households         Int
+  severity           Float              @default(50)
+  urgency            Float              @default(50)
+  vulnerability      Float              @default(50)
+  verificationStatus VerificationStatus @default(unverified)
+  active             Boolean            @default(true)
+  notes              String?
+  version            Int                @default(1)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  needs             NeedRequest[]
+  prioritySnapshots PrioritySnapshot[]
+  allocationItems   AllocationItem[]
+  incidents         Incident[]
+  assessments       Assessment[]
+
+  @@map("areas")
+}
+
+model Incident {
+  id          String   @id @default(uuid())
+  areaId      String
+  title       String
+  description String
+  severity    Float
+  reportedAt  DateTime @default(now())
+  resolved    Boolean  @default(false)
+
+  area Area @relation(fields: [areaId], references: [id], onDelete: Cascade)
+
+  @@map("incidents")
+}
+
+model NeedRequest {
+  id              String       @id @default(uuid())
+  areaId          String
+  resourceType    ResourceType
+  quantity        Int
+  unit            ResourceUnit
+  localSupply     Int          @default(0)
+  resourceUrgency Float?       @default(50)
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  area Area @relation(fields: [areaId], references: [id], onDelete: Cascade)
+
+  @@unique([areaId, resourceType])
+  @@map("need_requests")
+}
+
+model Assessment {
+  id              String   @id @default(uuid())
+  areaId          String
+  assessorId      String?
+  rawReport       String
+  suggestedScores String?
+  status          String   @default("pending")
+  createdAt       DateTime @default(now())
+
+  area     Area  @relation(fields: [areaId], references: [id], onDelete: Cascade)
+  assessor User? @relation(fields: [assessorId], references: [id])
+
+  @@map("assessments")
+}
+
+model PrioritySnapshot {
+  id                 String   @id @default(uuid())
+  areaId             String
+  score              Float
+  category           String
+  componentBreakdown String
+  confidence         Float    @default(1.0)
+  unknownFields      String?
+  formulaVersion     String   @default("v1.0")
+  computedAt         DateTime @default(now())
+
+  area Area @relation(fields: [areaId], references: [id], onDelete: Cascade)
+
+  @@index([areaId, computedAt])
+  @@map("priority_snapshots")
+}
+
+model PriorityConfig {
+  id             String   @id @default(uuid())
+  formulaVersion String   @unique
+  weights        String
+  populationCap  Int      @default(50000)
+  updatedBy      String?
+  reason         String?
+  createdAt      DateTime @default(now())
+
+  updater User? @relation(fields: [updatedBy], references: [id])
+
+  @@map("priority_configs")
+}
+
+model Resource {
+  type      ResourceType @id
+  unit      ResourceUnit
+  total     Int
+  reserved  Int          @default(0)
+  version   Int          @default(1)
+  updatedAt DateTime     @updatedAt
+
+  batches InventoryBatch[]
+
+  @@map("resources")
+}
+
+model InventoryBatch {
+  id           String       @id @default(uuid())
+  resourceType ResourceType
+  batchNumber  String
+  quantity     Int
+  expiryDate   DateTime?
+  receivedAt   DateTime     @default(now())
+
+  resource Resource @relation(fields: [resourceType], references: [type], onDelete: Cascade)
+
+  @@map("inventory_batches")
+}
+
+model AllocationRun {
+  id           String           @id @default(uuid())
+  status       AllocationStatus @default(draft)
+  createdBy    String?
+  inputVersion String?
+  fairnessData String?
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  creator   User?            @relation(fields: [createdBy], references: [id])
+  items     AllocationItem[]
+  approvals Approval[]
+
+  @@map("allocation_runs")
+}
+
+model AllocationItem {
+  id             String       @id @default(uuid())
+  runId          String
+  areaId         String
+  resourceType   ResourceType
+  recommendedQty Int
+  unmetQty       Int
+  rationale      String?
+
+  run  AllocationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  area Area          @relation(fields: [areaId], references: [id], onDelete: Cascade)
+
+  @@unique([runId, areaId, resourceType])
+  @@map("allocation_items")
+}
+
+model Approval {
+  id         String           @id @default(uuid())
+  runId      String
+  approverId String?
+  decision   ApprovalDecision
+  reason     String?
+  decidedAt  DateTime         @default(now())
+
+  run      AllocationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  approver User?         @relation(fields: [approverId], references: [id])
+
+  @@map("approvals")
+}
+
+model Simulation {
+  id                String   @id @default(uuid())
+  name              String
+  scenarioOverrides String
+  resultReferences  String?
+  createdAt         DateTime @default(now())
+
+  @@map("simulations")
+}
+
+model AuditEvent {
+  id             String   @id @default(uuid())
+  actorId        String?
+  actorRole      String
+  action         String
+  entityType     String
+  entityId       String
+  details        String
+  reason         String?
+  beforeSnapshot String?
+  afterSnapshot  String?
+  createdAt      DateTime @default(now())
+
+  @@map("audit_events")
+}
+
+model AIAnalysis {
+  id                String           @id @default(uuid())
+  rawResponse       String
+  validatedResponse String?
+  status            AIAnalysisStatus @default(suggested)
+  serviceStatus     String           @default("online")
+  createdAt         DateTime         @default(now())
+
+  @@map("ai_analyses")
+}

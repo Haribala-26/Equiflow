@@ -1,8 +1,12 @@
 import { NextResponse } from "next/server";
 import { getRepository } from "@/data/repository";
 import { calculateShortagePredictions } from "@/domain/simulation/engine";
+import { guardPermission } from "@/lib/session";
 
 export async function GET(req: Request) {
+  const { response } = await guardPermission("inventory:view", req);
+  if (response) return response;
+
   const { searchParams } = new URL(req.url);
   const repo = getRepository();
   const inventory = await repo.getInventory();

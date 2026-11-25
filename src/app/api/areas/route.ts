@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getRepository } from "@/data/repository";
 import { calculatePriorityScore } from "@/domain/priority/calculator";
+import { guardPermission } from "@/lib/session";
 
 export async function GET() {
   const repo = getRepository();
@@ -21,6 +22,9 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    const { session, response } = await guardPermission("area:edit", req);
+    if (response) return response;
+
     const body = await req.json();
     const repo = getRepository();
 
@@ -39,7 +43,7 @@ export async function POST(req: Request) {
       verificationStatus: body.verificationStatus || "pending_review",
     };
 
-    await repo.saveArea(newArea, body.actor || "Field Officer", body.reason);
+    await repo.saveArea(newArea, body.actor || session.name, body.reason);
     return NextResponse.json({ area: newArea }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json(

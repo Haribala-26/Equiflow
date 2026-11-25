@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getRepository } from "@/data/repository";
 import { runAllocation } from "@/domain/allocation/engine";
 import { egmAdapter } from "@/integrations/elephant-goldfish/adapter";
+import { guardPermission } from "@/lib/session";
 
 export async function GET() {
   const repo = getRepository();
@@ -11,6 +12,9 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    const { session, response } = await guardPermission("allocation:run", req);
+    if (response) return response;
+
     const body = await req.json().catch(() => ({}));
     const repo = getRepository();
     const areas = await repo.getAreas();
@@ -20,7 +24,7 @@ export async function POST(req: Request) {
       floorRatio: body.floorRatio,
     });
 
-    await repo.saveAllocationRun(run, body.actor || "Coordinator");
+    await repo.saveAllocationRun(run, body.actor || session.name);
 
     // Fresh-eyes EGM audit
     const egmAudit = await egmAdapter.auditAllocationRun(run);

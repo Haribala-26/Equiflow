@@ -14,10 +14,14 @@ import {
   X,
   LineChart as LineChartIcon,
   Sliders,
+  Lock,
+  Eye,
 } from "lucide-react";
 
 export default function ResourceInventoryPage() {
-  const { inventory, areas, refreshData } = useApp();
+  const { inventory, areas, refreshData, currentRole } = useApp();
+  const isAdmin = currentRole === "admin";
+
   const [editingStock, setEditingStock] = useState<ResourceStock | null>(null);
   const [newTotal, setNewTotal] = useState<number>(0);
   const [newReserved, setNewReserved] = useState<number>(0);
@@ -28,6 +32,7 @@ export default function ResourceInventoryPage() {
   const [consumptionMultiplier, setConsumptionMultiplier] = useState<number>(1.0);
 
   const handleOpenEdit = (stock: ResourceStock) => {
+    if (!isAdmin) return;
     setEditingStock(stock);
     setNewTotal(stock.total);
     setNewReserved(stock.reserved);
@@ -35,7 +40,7 @@ export default function ResourceInventoryPage() {
   };
 
   const handleSaveStock = async () => {
-    if (!editingStock) return;
+    if (!editingStock || !isAdmin) return;
 
     try {
       setIsSaving(true);
@@ -45,7 +50,7 @@ export default function ResourceInventoryPage() {
         body: JSON.stringify({
           resourceType: editingStock.type,
           updates: { total: newTotal, reserved: newReserved },
-          actor: "Emergency Coordinator",
+          actor: "Administrator",
           reason: updateReason || "Warehouse replenishment/audit",
         }),
       });
@@ -71,7 +76,32 @@ export default function ResourceInventoryPage() {
             Logistical stock tracking, warehouse reservations, and shortage burn-rate projections
           </p>
         </div>
+        <div className="flex items-center gap-2">
+          {!isAdmin ? (
+            <span className="flex items-center gap-1.5 px-3 py-1 bg-slate-100 text-slate-600 border border-slate-300 rounded-lg text-xs font-semibold">
+              <Eye className="w-3.5 h-3.5 text-slate-500" />
+              <span>Read-Only Logistics Mode</span>
+            </span>
+          ) : (
+            <span className="flex items-center gap-1.5 px-3 py-1 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg text-xs font-semibold">
+              <ShieldCheck className="w-3.5 h-3.5 text-indigo-600" />
+              <span>Admin Stock Control Active</span>
+            </span>
+          )}
+        </div>
       </div>
+
+      {/* Read-Only Notice for Coordinator */}
+      {!isAdmin && (
+        <div className="p-3.5 bg-blue-50/70 border border-blue-200 rounded-xl text-xs text-blue-900 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Lock className="w-4 h-4 text-blue-600 shrink-0" />
+            <span>
+              <strong>Coordinator View:</strong> Central warehouse quantities and reserve buffers are in read-only mode. Use the header demo switcher to switch to Administrator if you need to adjust stock reserves.
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Resource Inventory Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -137,13 +167,20 @@ export default function ResourceInventoryPage() {
                 </div>
               </div>
 
-              <button
-                onClick={() => handleOpenEdit(stock)}
-                className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition"
-              >
-                <PackagePlus className="w-3.5 h-3.5 text-teal" />
-                <span>Adjust Stock or Reserves</span>
-              </button>
+              {isAdmin ? (
+                <button
+                  onClick={() => handleOpenEdit(stock)}
+                  className="w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition"
+                >
+                  <PackagePlus className="w-3.5 h-3.5 text-indigo-600" />
+                  <span>Adjust Stock or Reserves</span>
+                </button>
+              ) : (
+                <div className="w-full py-2 bg-slate-50 text-slate-400 border border-slate-200 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 cursor-not-allowed">
+                  <Lock className="w-3.5 h-3.5" />
+                  <span>Stock Modifications Locked (Admin Only)</span>
+                </div>
+              )}
             </div>
           );
         })}
@@ -190,7 +227,7 @@ export default function ResourceInventoryPage() {
       </div>
 
       {/* Stock Adjustment Modal */}
-      {editingStock && (
+      {editingStock && isAdmin && (
         <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4">
           <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b pb-2">
@@ -250,7 +287,7 @@ export default function ResourceInventoryPage() {
               <button
                 onClick={handleSaveStock}
                 disabled={isSaving}
-                className="px-4 py-2 text-xs font-semibold bg-teal hover:bg-teal-700 text-white rounded shadow"
+                className="px-4 py-2 text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white rounded shadow"
               >
                 {isSaving ? "Saving..." : "Commit Inventory"}
               </button>
