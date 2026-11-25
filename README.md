@@ -1,5 +1,11 @@
 # EQUIFLOW — Intelligent Emergency Resource Distribution Platform
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Netlify%20Production-059669?style=for-the-badge&logo=netlify)](https://equiflow-pqb4.netlify.app/)
+[![Next.js 15](https://img.shields.io/badge/Next.js-15.5-000000?style=for-the-badge&logo=nextdotjs)](https://nextjs.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-PostgreSQL%2016-167D83?style=for-the-badge&logo=prisma)](https://prisma.io)
+[![Tests](https://img.shields.io/badge/Vitest-37%2F37%20Passing-10B981?style=for-the-badge&logo=vitest)](https://vitest.dev)
+
+> 🌐 **Live Web Application:** [https://equiflow-pqb4.netlify.app/](https://equiflow-pqb4.netlify.app/) *(Click to open immediately — no setup required)*  
 > **Primary Focus City:** Chennai, Tamil Nadu, India  
 > **Domain:** Humanitarian Logistics, Disaster Relief Optimization & Algorithmic Fairness  
 
@@ -65,7 +71,9 @@ Equiflow operates on a 10-stage end-to-end humanitarian workflow that balances o
 
 ---
 
-## 🏛️ Top-Level Visualizing Architecture
+## 🏛️ High-Level System Architecture
+
+![EQUIFLOW High-Level System Architecture](./public/images/high-level-system-architecture.svg)
 
 Equiflow is architected using a decoupled **Hexagonal / Ports-and-Adapters** design that enforces strict separation between presentation, security guards, mathematical domain engines, and the underlying data layer.
 
@@ -147,10 +155,11 @@ Equiflow provides two distinct, tailored experiences enforced both in the UI and
 
 ---
 
-## 📚 Deep-Dive Architecture Specifications
+## 📚 Architecture & Design Documentation
 
-Comprehensive architectural specifications are maintained in the [`idea-description/`](./idea-description) directory:
+Comprehensive architectural specifications and decision records are maintained in [`architectural-decisions/`](./architectural-decisions) and [`idea-description/`](./idea-description):
 
+- 🏛️ **[Architectural Decision Records (ADRs)](./architectural-decisions/)**: Complete ledger of 6 foundational architectural decisions (Hexagonal architecture, Dual persistence, RBAC guards, 2-phase allocation math, Responsible AI fallbacks, and Append-only audit logging).
 - 🗄️ **[Database Design Specification](./idea-description/DATABASE_DESIGN.md)**: Relational entity schema (15 Prisma models), fixed unit constraints, ACID transactions, optimistic concurrency locking (`version`), stale-input detection, and deterministic seed definitions.
 - 🏛️ **[System Architecture Specification](./idea-description/SYSTEM_ARCHITECTURE.md)**: Hexagonal architecture design, repository factory pattern, presentation layer divergence, and the Elephant-Goldfish dual-memory protocol.
 - 🛡️ **[Security & Responsible AI Architecture](./idea-description/SECURITY_AND_RESPONSIBLE_AI.md)**: Centralized RBAC permission matrix, server-side guard enforcement (`guardPermission`), AI deterministic fallback mechanisms, human-in-the-loop gates, and append-only audit verification.
@@ -174,7 +183,7 @@ Equiflow comes pre-configured with 7 active flood wards mapped across Greater Ch
 
 ---
 
-## 🚀 Quick Run
+## 🚀 Local Quick Run
 
 ### Option 1: In-Memory Mock Mode (Fastest — Zero DB Setup)
 
@@ -184,8 +193,6 @@ cd equiflow
 npm install
 npm run dev
 ```
-
-Open [http://localhost:3000](http://localhost:3000) (Emergency Coordinator view is active by default).
 
 ---
 
